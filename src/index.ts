@@ -14,10 +14,31 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw({ type: "application/vnd.custom-type" }));
 app.use(bodyParser.text({ type: "text/html" }));
 
-// app.get("/", async (req, res) => {
-//   const { rows } = await pool.query("SELECT NOW()");
-//   res.send(`Hello, World! The time from the DB is ${rows[0].now}`);
-// });
+
+//add a ticket
+app.post('/ticket', async (req, res) => {
+  try {
+    const {
+      tickettitle,
+      roll,
+      seat,
+      imgname,
+      showdate,
+      venue,
+      tourtitle,
+      section
+    } = req.body;
+    const newTicket = await pool.query(
+      'INSERT INTO ticketsys (tickettitle,section,roll,seat,imgname,showdate,venue,tourtitle) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING * ',
+      [tickettitle,roll, seat,imgname,showdate,venue,tourtitle,section]
+    );
+    res.json(newTicket.rows[0]);
+  } catch (err) {
+    console.log('failed to add ticket');
+  }
+});
+
+//get all tickets
 app.get('/tickets', async(req, res) => {
   try {
     const allTickets = await pool.query('SELECT * FROM ticketsys');
