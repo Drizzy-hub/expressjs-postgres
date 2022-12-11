@@ -30,7 +30,7 @@ app.post('/ticket', async (req, res) => {
     } = req.body;
     const newTicket = await pool.query(
       'INSERT INTO ticketsys (tickettitle,section,roll,seat,imgname,showdate,venue,tourtitle) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING * ',
-      tickettitle,section,roll, seat,imgname,showdate,venue,tourtitle
+      [tickettitle,section,roll, seat,imgname,showdate,venue,tourtitle]
     );
     res.json(newTicket.rows[0]);
   } catch (err) {
