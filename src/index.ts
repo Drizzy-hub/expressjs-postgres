@@ -6,7 +6,6 @@ import pg from "pg";
 
 //   variable injected by Railway
 const pool = new pg.Pool();
-
 const app = express();
 const port = process.env.PORT || 3333;
 
